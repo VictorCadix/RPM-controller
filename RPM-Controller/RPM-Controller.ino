@@ -4,6 +4,8 @@
 #define pinMotorPWM 10
 
 volatile int vueltas;
+int RPM;
+
 //Time variables.
 unsigned long previousMillis = 0;
 float sampleTime;
@@ -13,8 +15,28 @@ void doIR (){
   vueltas ++;
 }
 
+void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) velocidad
+  if (direccion == 0) { //CW
+    digitalWrite(pinINA, HIGH);
+    digitalWrite(pinINB, LOW);
+  }
+  else { //CCW
+    digitalWrite(pinINA, LOW);
+    digitalWrite(pinINB, HIGH);
+  }
+  if (velocidad >= 0 && velocidad <= 255) {
+    analogWrite(pinMotorPWM, velocidad);
+  }
+  else if (velocidad > 255) {
+    analogWrite(pinMotorPWM, 255);
+  }
+  else{
+    digitalWrite(pinMotorPWM, LOW);
+  }
+}
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(19200);
   pinMode(13,OUTPUT);
   pinMode(pinIR, INPUT);
   attachInterrupt(0, doIR, FALLING); //Pin 2
@@ -30,13 +52,12 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(pinMotorPWM,HIGH);
-  digitalWrite(pinINA,HIGH);
-  digitalWrite(pinINB,LOW);
   currentMillis = millis();
   
   if (currentMillis - previousMillis >= sampleTime) {
     previousMillis = currentMillis;
+    
+    giraMotor(1,200);
     
     //Prints
     Serial.print (currentMillis);
