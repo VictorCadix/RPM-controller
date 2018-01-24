@@ -4,7 +4,19 @@
 #define pinMotorPWM 10
 
 volatile int vueltas;
-int RPM;
+int last_vueltas;
+
+typedef struct Velocidad{
+  float real;
+  float target;
+  float error;
+  float last_error;
+  float last_real;
+  float errorSum;   //Para integrador
+  float errorDeriv; //Para derivador
+};
+
+Velocidad RPM;
 
 //Time variables.
 unsigned long previousMillis = 0;
@@ -35,6 +47,12 @@ void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) veloci
   }
 }
 
+void computeRPM (){
+  RPM.real = (vueltas - last_vueltas);
+  last_vueltas = vueltas;
+  RPM.real = RPM.real * 300; // 300=60*10/2 donde 60 segundos/min * 10 medidas/seg / 2 palas (helice)
+}
+
 void setup() {
   Serial.begin(19200);
   pinMode(13,OUTPUT);
@@ -48,6 +66,7 @@ void setup() {
 
   //Setup variables 
   vueltas = 0;
+  last_vueltas = 0;
   sampleTime = 100; //ms
 }
 
@@ -56,12 +75,13 @@ void loop() {
   
   if (currentMillis - previousMillis >= sampleTime) {
     previousMillis = currentMillis;
-    
+
+    computeRPM();
     giraMotor(1,200);
     
     //Prints
     Serial.print (currentMillis);
     Serial.print (",");
-    Serial.println(vueltas);
+    Serial.println(RPM.real);
   }
 }
