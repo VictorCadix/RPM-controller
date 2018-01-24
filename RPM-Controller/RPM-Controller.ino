@@ -4,6 +4,10 @@
 #define pinMotorPWM 10
 
 volatile int vueltas;
+//Time variables.
+unsigned long previousMillis = 0;
+float sampleTime;
+unsigned long currentMillis;
 
 void doIR (){
   vueltas ++;
@@ -20,16 +24,23 @@ void setup() {
   pinMode(pinINB,OUTPUT);
   pinMode(pinMotorPWM,OUTPUT);
 
-  //Variable initialisation
+  //Setup variables 
   vueltas = 0;
-  
+  sampleTime = 100; //ms
 }
 
 void loop() {
   digitalWrite(pinMotorPWM,HIGH);
   digitalWrite(pinINA,HIGH);
   digitalWrite(pinINB,LOW);
-  Serial.println(vueltas);
-  //Serial.print("/");
- 
+  currentMillis = millis();
+  
+  if (currentMillis - previousMillis >= sampleTime) {
+    previousMillis = currentMillis;
+    
+    //Prints
+    Serial.print (currentMillis);
+    Serial.print (",");
+    Serial.println(vueltas);
+  }
 }
