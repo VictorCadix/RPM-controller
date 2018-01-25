@@ -18,6 +18,11 @@ typedef struct Velocidad{
 
 Velocidad RPM;
 
+int Kp;
+int Ki;
+int velocidad;
+long errorRegulador;
+
 //Time variables.
 unsigned long previousMillis = 0;
 float sampleTime;
@@ -50,7 +55,15 @@ void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) veloci
 void computeRPM (){
   RPM.real = (vueltas - last_vueltas);
   last_vueltas = vueltas;
-  RPM.real = RPM.real * 300; // 300=60*10/2 donde 60 segundos/min * 10 medidas/seg / 2 palas (helice)
+  RPM.real = RPM.real * 150; // 300=60*10/2 donde 60 segundos/min * 10 medidas/seg / 2 palas (helice)
+}
+
+float Compute_Regulador(){
+    RPM.error = RPM.target - RPM.real;
+    RPM.errorSum += RPM.error*sampleTime/1000;
+    
+    float result = (long)(Kp * RPM.error + Ki * RPM.errorSum);
+    return result;
 }
 
 void setup() {
@@ -67,21 +80,41 @@ void setup() {
   //Setup variables 
   vueltas = 0;
   last_vueltas = 0;
-  sampleTime = 100; //ms
+  RPM.real = 0;
+  RPM.target = 0;
+
+  Kp = 3;
+  Ki = 2;
+  sampleTime = 200; //ms
 }
 
 void loop() {
   currentMillis = millis();
   
+  if(currentMillis >= 1000){
+    RPM.target = 5000;
+  }
+  
   if (currentMillis - previousMillis >= sampleTime) {
     previousMillis = currentMillis;
 
     computeRPM();
-    giraMotor(1,200);
+    errorRegulador = Compute_Regulador();
+
+    velocidad = errorRegulador * 0.000574 * 51; //Pasamos de RPM a tension en PWM
+    giraMotor(1,velocidad);
     
     //Prints
     Serial.print (currentMillis);
     Serial.print (",");
-    Serial.println(RPM.real);
+    Serial.print (RPM.target);
+    Serial.print (",");
+    Serial.print (RPM.real);
+    Serial.print (",");
+    Serial.print (velocidad);
+    Serial.print (",");
+    Serial.print (Kp * RPM.error);
+    Serial.print (",");
+    Serial.println (Ki * RPM.errorSum);
   }
 }
