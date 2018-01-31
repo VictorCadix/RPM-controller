@@ -3,8 +3,8 @@
 #define pinINB 9
 #define pinMotorPWM 10
 
-volatile int tiempoPalas;
-volatile int last_tiempoPalas;
+volatile long tiempoPalas;
+volatile long last_tiempoPalas;
 volatile int vueltas;
 int last_vueltas;
 
@@ -32,9 +32,9 @@ unsigned long currentMillis;
 
 void doIR (){
   vueltas ++;
-  tiempoPalas = millis();
-  tiempoPalas = tiempoPalas - last_tiempoPalas;
-  last_tiempoPalas = millis();
+  long now = millis();
+  tiempoPalas = now - last_tiempoPalas;
+  last_tiempoPalas = now;
 }
 
 void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) velocidad
