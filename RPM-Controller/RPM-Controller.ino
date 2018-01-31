@@ -32,7 +32,7 @@ unsigned long currentMillis;
 
 void doIR (){
   vueltas ++;
-  long now = millis();
+  long now = micros();
   tiempoPalas = now - last_tiempoPalas;
   last_tiempoPalas = now;
 }
@@ -65,7 +65,7 @@ void computeRPM (){
   }
   else{
     int tiempoPorVuelta = tiempoPalas * 2;  //2 palas (helice)
-    RPM.real = 60000 / tiempoPorVuelta;
+    RPM.real = 60000000 / tiempoPorVuelta;
   }
 }
 
