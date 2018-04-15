@@ -3,9 +3,9 @@
 #define pinINB 9
 #define pinMotorPWM 10
 
-volatile long tiempoPalas;
-volatile long last_tiempoPalas;
-volatile int vueltas;
+volatile unsigned long tiempoPalas;
+volatile unsigned long last_tiempoPalas;
+volatile unsigned int vueltas;
 int last_vueltas;
 
 typedef struct Velocidad{
@@ -31,10 +31,13 @@ float sampleTime;
 unsigned long currentMillis;
 
 void doIR (){
-  vueltas ++;
   long now = micros();
-  tiempoPalas = now - last_tiempoPalas;
-  last_tiempoPalas = now;
+  unsigned long aux = now - last_tiempoPalas;
+  if(aux > 3000){
+    vueltas ++;
+    tiempoPalas = aux;
+    last_tiempoPalas = now;
+  }
 }
 
 void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) velocidad
@@ -60,11 +63,15 @@ void giraMotor(bool direccion, int velocidad) { // 0->CW 1->CCW / (0-255) veloci
 void computeRPM (){
   int diff = vueltas - last_vueltas;
   last_vueltas = vueltas;
+  
   if (diff == 0){
     RPM.real = 0;
   }
   else{
-    int tiempoPorVuelta = tiempoPalas * 2;  //2 palas (helice)
+    long tiempoPorVuelta;
+    long aux;
+    aux = tiempoPalas;
+    tiempoPorVuelta = aux * 2;  //2 palas (helice)
     RPM.real = 60000000 / tiempoPorVuelta;
   }
 }
