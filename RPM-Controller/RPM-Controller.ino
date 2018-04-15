@@ -85,7 +85,7 @@ float Compute_Regulador(){
 }
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(1000000);
   pinMode(13,OUTPUT);
   pinMode(pinIR, INPUT);
   attachInterrupt(0, doIR, FALLING); //Pin 2
@@ -104,19 +104,22 @@ void setup() {
 
   Kp = 3;
   Ki = 2;
-  sampleTime = 200; //ms
+  sampleTime = 50; //ms
 }
 
 void loop() {
   currentMillis = millis();
   
-  if(currentMillis >= 1000){
-    RPM.target = 5000;
-  }
-  
   if (currentMillis - previousMillis >= sampleTime) {
     previousMillis = currentMillis;
 
+    if(currentMillis >= 5000){
+      RPM.target = analogRead(0)*7.835;
+    }
+    else if(currentMillis >= 1000){
+      RPM.target = 5000;
+    }
+    
     computeRPM();
     errorRegulador = Compute_Regulador();
 
@@ -134,6 +137,8 @@ void loop() {
     Serial.print (",");
     Serial.print (Kp * RPM.error);
     Serial.print (",");
-    Serial.println (Ki * RPM.errorSum);
+    Serial.print (Ki * RPM.errorSum);
+    Serial.print (",");
+    Serial.println (vueltas);
   }
 }
