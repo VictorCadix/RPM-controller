@@ -104,7 +104,9 @@ void setup() {
 
   Kp = 3;
   Ki = 2;
-  sampleTime = 50; //ms
+  sampleTime = 100; //ms
+
+  Serial.println ("Setup done");
 }
 
 void loop() {
@@ -139,6 +141,7 @@ void loop() {
     Serial.print (",");
     Serial.print (Ki * RPM.errorSum);
     Serial.print (",");
-    Serial.println (vueltas);
+    Serial.print (vueltas );
+    Serial.println (";");
   }
 }
