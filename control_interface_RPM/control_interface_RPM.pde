@@ -42,7 +42,7 @@ void draw() {
   text("Target: " + target,10,15);
   GPointsArray points = new GPointsArray(nPoints);
   for(int i=0; i<nPoints; i++){
-    points.add(i, target);
+    points.add(i, l_target.get(i));
   }
   
   GPlot plot = new GPlot(this);
