@@ -1,4 +1,5 @@
 import processing.serial.*;
+import grafica.*;
 
 int millis;
 float target;
@@ -10,15 +11,32 @@ int vueltas;
 
 boolean arduSetupDone = false;
 
+//Plot
+int nPoints = 0;
+GPointsArray points = new GPointsArray(nPoints);
+
 Serial port;
 
 void setup() {
+  
+  //Serial
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 1000000);
   port.bufferUntil('\n');
+  
+  //Window
+  size(600,400);
 }
 
 void draw() {
+  GPointsArray points = new GPointsArray(nPoints);
+  points.add(nPoints, target);
+  
+  GPlot plot = new GPlot(this);
+  plot.setPos(25, 25);
+  
+  plot.setPoints(points);
+  plot.defaultDraw();
 }
 
 void serialEvent(Serial port) {
@@ -53,9 +71,6 @@ void stringParse(String str) {
     if (cont == 0) {
       millis = Integer.parseInt(auxStr);
       println("millis " + millis);
-      if (millis != 100) {
-        break;
-      }
     } else if (cont == 1) {
       target = Float.parseFloat(auxStr);
       println(target);
@@ -76,4 +91,5 @@ void stringParse(String str) {
       println(vueltas);
     }
   }
+  nPoints++;
 }
