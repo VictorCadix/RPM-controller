@@ -44,7 +44,7 @@ void stringParse(String str) {
     if (commaPos == -1) {
       //commaPos = str.length();
       println("LastElement");
-      auxStr = str.substring(lastCommaPos);//, commaPos);
+      auxStr = str.substring(lastCommaPos, str.length()-1);//, commaPos);
     } else {
       println("Comma pos at: " + commaPos);
       auxStr = str.substring(lastCommaPos, commaPos);
