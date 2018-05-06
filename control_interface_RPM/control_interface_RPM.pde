@@ -17,6 +17,8 @@ GPointsArray points = new GPointsArray(nPoints);
 
 Serial port;
 
+PFont fTarget;
+
 void setup() {
   
   //Serial
@@ -26,14 +28,21 @@ void setup() {
   
   //Window
   size(600,400);
+  
+  //Text
+  fTarget = createFont("Arial",16,true); // Arial, 16 point, anti-aliasing on
 }
 
 void draw() {
+  background(200);
+  textFont(fTarget,16);
+  fill(0);
+  text("Target: " + target,10,15);
   GPointsArray points = new GPointsArray(nPoints);
   points.add(nPoints, target);
   
   GPlot plot = new GPlot(this);
-  plot.setPos(25, 25);
+  plot.setPos(50, 50);
   
   plot.setPoints(points);
   plot.defaultDraw();
