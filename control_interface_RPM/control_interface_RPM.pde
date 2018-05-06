@@ -14,6 +14,7 @@ boolean arduSetupDone = false;
 //Plot
 int nPoints = 0;
 GPointsArray points = new GPointsArray(nPoints);
+FloatList l_target;
 
 Serial port;
 
@@ -31,6 +32,7 @@ void setup() {
   
   //Text
   fTarget = createFont("Arial",16,true); // Arial, 16 point, anti-aliasing on
+  l_target = new FloatList();
 }
 
 void draw() {
@@ -39,7 +41,9 @@ void draw() {
   fill(0);
   text("Target: " + target,10,15);
   GPointsArray points = new GPointsArray(nPoints);
-  points.add(nPoints, target);
+  for(int i=0; i<nPoints; i++){
+    points.add(i, target);
+  }
   
   GPlot plot = new GPlot(this);
   plot.setPos(50, 50);
@@ -83,6 +87,7 @@ void stringParse(String str) {
     } else if (cont == 1) {
       target = Float.parseFloat(auxStr);
       println(target);
+      l_target.append(target);
     } else if (cont == 2) {
       real = Float.parseFloat(auxStr);
       println(real);
