@@ -106,6 +106,7 @@ void setup() {
   Ki = 2;
   sampleTime = 100; //ms
 
+  Serial.println();
   Serial.println ("Setup done");
 }
 

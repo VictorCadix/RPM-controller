@@ -22,15 +22,17 @@ void draw() {
 }
 
 void serialEvent(Serial port) {
-  String str = port.readString();
+  String str = trim(port.readString());
   println(str);
-  //if (str.equals("Setup done\n")) {
-  //  arduSetupDone = true;
-  //  println("Start");
-  //}
-  //if (arduSetupDone == true) {
+  if (arduSetupDone == true) {
     stringParse(str);
-  //}
+  } else {
+    String comp = "Setup done";
+    if (str.equals(comp)==true) {
+      arduSetupDone = true;
+      println("Start");
+    }
+  }
 }
 
 void stringParse(String str) {
@@ -50,7 +52,7 @@ void stringParse(String str) {
     }
     if (cont == 0) {
       millis = Integer.parseInt(auxStr);
-      println(millis);
+      println("millis " + millis);
       if (millis != 100) {
         break;
       }
