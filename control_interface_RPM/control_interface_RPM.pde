@@ -1,4 +1,5 @@
 import processing.serial.*;
+import grafica.*;
 
 int millis;
 float target;
@@ -10,15 +11,45 @@ int vueltas;
 
 boolean arduSetupDone = false;
 
+//Plot
+int nPoints = 0;
+GPointsArray points = new GPointsArray(nPoints);
+FloatList l_target;
+
 Serial port;
 
+PFont fTarget;
+
 void setup() {
+  
+  //Serial
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 1000000);
   port.bufferUntil('\n');
+  
+  //Window
+  size(600,400);
+  
+  //Text
+  fTarget = createFont("Arial",16,true); // Arial, 16 point, anti-aliasing on
+  l_target = new FloatList();
 }
 
 void draw() {
+  background(200);
+  textFont(fTarget,16);
+  fill(0);
+  text("Target: " + target,10,15);
+  GPointsArray points = new GPointsArray(nPoints);
+  for(int i=0; i<nPoints; i++){
+    points.add(i, l_target.get(i));
+  }
+  
+  GPlot plot = new GPlot(this);
+  plot.setPos(50, 50);
+  
+  plot.setPoints(points);
+  plot.defaultDraw();
 }
 
 void serialEvent(Serial port) {
@@ -53,12 +84,10 @@ void stringParse(String str) {
     if (cont == 0) {
       millis = Integer.parseInt(auxStr);
       println("millis " + millis);
-      if (millis != 100) {
-        break;
-      }
     } else if (cont == 1) {
       target = Float.parseFloat(auxStr);
       println(target);
+      l_target.append(target);
     } else if (cont == 2) {
       real = Float.parseFloat(auxStr);
       println(real);
@@ -76,4 +105,5 @@ void stringParse(String str) {
       println(vueltas);
     }
   }
+  nPoints++;
 }
