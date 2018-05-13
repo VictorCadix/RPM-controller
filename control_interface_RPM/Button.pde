@@ -41,18 +41,19 @@ class Button {
     fill(r,g,b);
     //noStroke();
     isMouseOver();
+    rectMode(CENTER);
     rect(posX,posY,sizeX*scale,sizeY*scale, 5);
     fill(0);
     textAlign(CENTER,CENTER);
     textFont(font);
-    text(text,posX+sizeX/2, posY+sizeY/2);
+    text(text,posX, posY);
     
   }
   
   boolean isMouseOver(){
-    if (mouseX > posX && mouseX < posX+sizeX){
-      if (mouseY >posY && mouseY < posY+sizeY){
-        scale = 0.8;
+    if (mouseX > posX-sizeX/2 && mouseX < posX+sizeX/2){
+      if (mouseY >posY-sizeY/2 && mouseY < posY+sizeY/2){
+        scale = 0.9;
         return true;
       }
     }
