@@ -87,5 +87,7 @@ void stringParse(String str) {
 }
 
 void mousePressed(){
-  button1.isPressed();
+  if(button1.isMouseOver()){
+    button1.text = "PRESSED";
+  }
 }

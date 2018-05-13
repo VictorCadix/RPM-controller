@@ -15,6 +15,8 @@ class Button {
   int g;
   int b;
   
+  float scale;
+  
   //Functions
   
   Button(float posx, float posy, float sizex, float sizey){
@@ -23,6 +25,8 @@ class Button {
     this.sizeX = sizex;
     this.sizeY = sizey;
     this.text = "";
+    
+    this.scale = 1;
     
     font = createFont("Arial",14,true);
   }
@@ -36,7 +40,8 @@ class Button {
   void draw(){
     fill(r,g,b);
     //noStroke();
-    rect(posX,posY,sizeX,sizeY, 5);
+    isMouseOver();
+    rect(posX,posY,sizeX*scale,sizeY*scale, 5);
     fill(0);
     textAlign(CENTER,CENTER);
     textFont(font);
@@ -44,13 +49,14 @@ class Button {
     
   }
   
-  boolean isPressed(){
+  boolean isMouseOver(){
     if (mouseX > posX && mouseX < posX+sizeX){
       if (mouseY >posY && mouseY < posY+sizeY){
-        this.text = "PRESSED";
+        scale = 0.8;
         return true;
       }
     }
+    scale = 1;
     return false;
   }
 }
