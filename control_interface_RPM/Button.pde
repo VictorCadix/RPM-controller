@@ -9,6 +9,10 @@ class Button {
   
   String text;
   
+  //Color
+  int r;
+  int g;
+  int b;
   
   //Functions
   
@@ -18,5 +22,11 @@ class Button {
     this.sizeX = sizex;
     this.sizeY = sizey;
     this.text = "";
+  }
+  
+  void setColor(int red, int green, int blue){
+    this.r = red;
+    this.g = green;
+    this.b = blue;
   }
 }
