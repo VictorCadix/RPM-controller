@@ -19,7 +19,7 @@ void setup() {
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 1000000);
   port.bufferUntil('\n');
-  button1 = new Button (10,10,75,75);
+  button1 = new Button (50,50,75,75);
   button1.text = "BUTTON";
   button1.setColor(255,0,0);
 }
@@ -84,4 +84,8 @@ void stringParse(String str) {
       println(vueltas);
     }
   }
+}
+
+void mousePressed(){
+  button1.isPressed();
 }

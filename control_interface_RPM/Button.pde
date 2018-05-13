@@ -24,7 +24,7 @@ class Button {
     this.sizeY = sizey;
     this.text = "";
     
-    font = createFont("Arial",16,true);
+    font = createFont("Arial",14,true);
   }
   
   void setColor(int red, int green, int blue){
@@ -35,11 +35,22 @@ class Button {
   
   void draw(){
     fill(r,g,b);
-    rect(posX,posY,sizeX,sizeY);
+    //noStroke();
+    rect(posX,posY,sizeX,sizeY, 5);
     fill(0);
     textAlign(CENTER,CENTER);
     textFont(font);
-    text(text,(posX+sizeX)/2,(posY+sizeY)/2);
+    text(text,posX+sizeX/2, posY+sizeY/2);
     
+  }
+  
+  boolean isPressed(){
+    if (mouseX > posX && mouseX < posX+sizeX){
+      if (mouseY >posY && mouseY < posY+sizeY){
+        this.text = "PRESSED";
+        return true;
+      }
+    }
+    return false;
   }
 }
