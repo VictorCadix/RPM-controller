@@ -7,6 +7,7 @@ class Button {
   float sizeX;
   float sizeY;
   
+  PFont font;
   String text;
   
   //Color
@@ -22,11 +23,23 @@ class Button {
     this.sizeX = sizex;
     this.sizeY = sizey;
     this.text = "";
+    
+    font = createFont("Arial",16,true);
   }
   
   void setColor(int red, int green, int blue){
     this.r = red;
     this.g = green;
     this.b = blue;
+  }
+  
+  void draw(){
+    fill(r,g,b);
+    rect(posX,posY,sizeX,sizeY);
+    fill(0);
+    textAlign(CENTER,CENTER);
+    textFont(font);
+    text(text,(posX+sizeX)/2,(posY+sizeY)/2);
+    
   }
 }
