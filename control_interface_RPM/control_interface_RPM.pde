@@ -12,13 +12,21 @@ boolean arduSetupDone = false;
 
 Serial port;
 
+Button button1;
+
 void setup() {
+  size(600,300);
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 1000000);
   port.bufferUntil('\n');
+  button1 = new Button (10,10,75,75);
+  button1.text = "BUTTON";
+  button1.setColor(255,0,0);
 }
 
 void draw() {
+  background(200);
+  button1.draw();
 }
 
 void serialEvent(Serial port) {
