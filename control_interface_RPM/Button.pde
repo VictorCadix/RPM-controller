@@ -19,6 +19,8 @@ class Button {
   boolean wasPressed;
   boolean mouseOver;
   
+  int timesPressed;
+  
   //Functions
   
   Button(float posx, float posy, float sizex, float sizey){
@@ -31,6 +33,7 @@ class Button {
     this.scale = 1;
     this.wasPressed = false;
     this.mouseOver = false;
+    this.timesPressed = 0;
     
     font = createFont("Arial",14,true);
   }
@@ -86,6 +89,7 @@ class Button {
   boolean isReleased(){
     if(mousePressed == false && wasPressed){
       wasPressed = false;
+      timesPressed++;
       scale = 1;
       return true;
     }
