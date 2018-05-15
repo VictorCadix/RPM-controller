@@ -88,16 +88,14 @@ void stringParse(String str) {
 
 void mousePressed(){
   if(button1.isMouseOver()){
-    button1.text = "PRESSED";
-    button1.scale = 0.9;
+    
   }
   else{
-    button1.text = "Relesed";
+    
   }
 }
 void mouseReleased(){
   if(button1.isMouseOver()){
-    button1.text = "RELEASED";
-    button1.scale = 1;
+    //button1.scale = 1;
   }
 }

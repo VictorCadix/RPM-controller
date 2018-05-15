@@ -16,6 +16,7 @@ class Button {
   int b;
   
   float scale;
+  boolean wasPressed; 
   
   //Functions
   
@@ -27,6 +28,7 @@ class Button {
     this.text = "";
     
     this.scale = 1;
+    this.wasPressed = false;
     
     font = createFont("Arial",14,true);
   }
@@ -37,10 +39,16 @@ class Button {
     this.b = blue;
   }
   
+  void setName(String txt){
+    text = txt;
+  }
+  
   void draw(){
     fill(r,g,b);
     //noStroke();
     isMouseOver();
+    isPressed();
+    isReleased();
     rectMode(CENTER);
     rect(posX,posY,sizeX*scale,sizeY*scale, 5);
     fill(0);
@@ -53,12 +61,30 @@ class Button {
   boolean isMouseOver(){
     if (mouseX > posX-sizeX/2 && mouseX < posX+sizeX/2){
       if (mouseY >posY-sizeY/2 && mouseY < posY+sizeY/2){
-        //scale = 0.9;
+        //change transparency
         return true;
       }
     }
-    scale = 1;
-    text = "BUTTON";
+    return false;
+  }
+  
+  boolean isPressed(){
+    if (mousePressed == true){
+      scale = 0.9;
+      wasPressed = true;
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  
+  boolean isReleased(){
+    if(mousePressed == false && wasPressed){
+      wasPressed = false;
+      scale = 1;
+      return true;
+    }
     return false;
   }
 }
