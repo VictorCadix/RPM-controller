@@ -16,7 +16,8 @@ class Button {
   int b;
   
   float scale;
-  boolean wasPressed; 
+  boolean wasPressed;
+  boolean mouseOver;
   
   //Functions
   
@@ -29,6 +30,7 @@ class Button {
     
     this.scale = 1;
     this.wasPressed = false;
+    this.mouseOver = false;
     
     font = createFont("Arial",14,true);
   }
@@ -62,14 +64,16 @@ class Button {
     if (mouseX > posX-sizeX/2 && mouseX < posX+sizeX/2){
       if (mouseY >posY-sizeY/2 && mouseY < posY+sizeY/2){
         //change transparency
+        mouseOver = true;
         return true;
       }
     }
+    mouseOver = false;
     return false;
   }
   
   boolean isPressed(){
-    if (mousePressed == true){
+    if (mousePressed == true && mouseOver){
       scale = 0.9;
       wasPressed = true;
       return true;
