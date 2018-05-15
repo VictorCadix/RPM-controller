@@ -53,11 +53,12 @@ class Button {
   boolean isMouseOver(){
     if (mouseX > posX-sizeX/2 && mouseX < posX+sizeX/2){
       if (mouseY >posY-sizeY/2 && mouseY < posY+sizeY/2){
-        scale = 0.9;
+        //scale = 0.9;
         return true;
       }
     }
     scale = 1;
+    text = "BUTTON";
     return false;
   }
 }
